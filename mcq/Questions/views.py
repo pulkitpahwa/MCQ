@@ -47,26 +47,27 @@ def find_questions_with_given_tags(request) :
         techniquetags = TechniqueTags.objects.all().values_list("tag__name", flat = True)
         difficultytags = DifficultyTags.objects.all().values_list("tag__name", flat = True)
 
-        non_req_tool_tags = set(tooltags) - set(req_tools_tags)
-        non_req_technique_tags = set(techniquetags) - set(req_techniques_tags)
-        non_req_domain_tags = set(domaintags) - set(req_domain_tags)
-        non_req_difficulty_tags = set(difficultytags) - set(req_difficulty_tags)
+        non_req_tool_tags = list( set(tooltags) - set(req_tools_tags) )
+        non_req_technique_tags = list( set(techniquetags) - set(req_techniques_tags) )
+        non_req_domain_tags =  list( set(domaintags) - set(req_domain_tags) )
+        non_req_difficulty_tags = list(set(difficultytags) - set(req_difficulty_tags) )
 
-        result = Question.objects.all().exclude(tools__name__in = non_req_tool_tags, techniques__name__in = non_req_technique_tags, 
-                                          domains__name__in = non_req_domain_tags, difficulty__name__in = non_req_domain_tags ).distinct()
+
+        result = Question.objects.all()
         for i in req_tools_tags : 
-            result = result.filter(tools__name__in = [i])
+            result = result.filter(tools__name__in = [i]).exclude(tools__name__in = non_req_tool_tags)
         for i in req_techniques_tags : 
-            result = result.filter(techniques__name__in = [i])
+            result = result.filter(techniques__name__in = [i]).exclude(techniques__name__in = non_req_technique_tags)
         for i in req_domain_tags :
-            result = result.filter(domains__name__in = [i])
+            result = result.filter(domains__name__in = [i]).exclude(domains__name__in = non_req_domain_tags)
         for i in req_difficulty_tags : 
-            result = result.filter(domains__name__in = [i])
-        for i in result : 
-            print i
+            result = result.filter(difficulty__name__in = [i]).exclude(difficulty__name__in = non_req_difficulty_tags)
 
+
+        print "result = ", result
         return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,
-            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result}, 
+            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,
+            "non_tools" : non_req_tool_tags, "non_techniques" : non_req_technique_tags, "non_domains" : non_req_domain_tags, "non_difficulty":non_req_difficulty_tags}, 
                                  context_instance = RequestContext(request))
 
 
