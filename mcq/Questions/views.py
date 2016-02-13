@@ -30,18 +30,22 @@ from Questions.models import Question, ToolTags, TechniqueTags, DomainTags, Diff
 #        result = result.filter(domains__name__in = [i])
 #    for i in req_difficulty_tags : 
 #        result = result.filter(domains__name__in = [i])
-#
-#
+
 
 def find_questions_with_given_tags(request) :
     if request.method == "GET" :
         return render_to_response("form.html",{}, context_instance = RequestContext(request))
     else :
-        req_domain_tags     = request.POST['domain'].split(",")
-        req_tools_tags      = request.POST['tools'].split(",")
-        req_techniques_tags = request.POST['techniques'].split(",")
-        req_difficulty_tags = request.POST['difficulty'].split(",")
+        req_domain_tags     = [i.lstrip().rstrip() for i in request.POST['domain'].split(",")]
+        req_tools_tags      = [i.lstrip().rstrip() for i in request.POST['tools'].split(",")]
+        req_techniques_tags = [i.lstrip().rstrip() for i in request.POST['techniques'].split(",")]
+        req_difficulty_tags = [i.lstrip().rstrip() for i in request.POST['difficulty'].split(",")]
 
+        print req_tools_tags
+        print req_techniques_tags
+        print req_domain_tags
+        print req_difficulty_tags
+    
         tooltags = ToolTags.objects.all().values_list("tag__name", flat = True)
         domaintags = DomainTags.objects.all().values_list("tag__name", flat = True)
         techniquetags = TechniqueTags.objects.all().values_list("tag__name", flat = True)
@@ -55,14 +59,31 @@ def find_questions_with_given_tags(request) :
 
         result = Question.objects.all()
         for i in req_tools_tags : 
-            result = result.filter(tools__name__in = [i]).exclude(tools__name__in = non_req_tool_tags)
-        for i in req_techniques_tags : 
-            result = result.filter(techniques__name__in = [i]).exclude(techniques__name__in = non_req_technique_tags)
-        for i in req_domain_tags :
-            result = result.filter(domains__name__in = [i]).exclude(domains__name__in = non_req_domain_tags)
-        for i in req_difficulty_tags : 
-            result = result.filter(difficulty__name__in = [i]).exclude(difficulty__name__in = non_req_difficulty_tags)
+            if not i == "" :
+                result = result.filter(tools__name__in = [i])
 
+        for i in req_techniques_tags : 
+            if not i == "" :
+                result = result.filter(techniques__name__in = [i])
+        print result
+
+        for i in req_domain_tags :
+            if not i == "" :
+                result = result.filter(domains__name__in = [i])
+
+
+        for i in req_difficulty_tags : 
+            if not i == "" :
+                result = result.filter(difficulty__name__in = [i])
+
+        if 'tools_exclude' in request.POST :
+            result = result.exclude(tools__name__in = non_req_tool_tags)
+        if 'techniques_exclude' in request.POST :
+            result = result.exclude(techniques__name__in = non_req_technique_tags)
+        if 'domain_exclude' in request.POST :
+            result = result.exclude(domains__name__in = non_req_domain_tags)
+        if 'difficulty_exclude' in request.POST :
+            result = result.exclude(difficulty__name__in = non_req_difficulty_tags)
 
         print "result = ", result
         return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,

@@ -1,0 +1,16 @@
+Count,Question,Option A,Option B,Option C,Option D,Answer,Difficulty,Tools,Techniques,Domain
+1,True or False.  The package TM and other text mining packages operate on a format called corpus.,1,0,,,A,1,R,Text Mining,
+2,gsub is a pattern matching and replacement function in R. True or False?,,,,,A,1,R,,
+3,______ function in R is used to convert upper-case characters in a character vector to lower-case?,to_lower,tolower,lowercase,lower_case,B,2,R,,
+4,Which package in R contains the function autoplot? ,ggplot,gplot2,ggplot2,igraph,C,1,R,Data Visualizatin,
+5,I want to Change axis labels and legend titles in a graph in R using the ggplot2 package. I can use the ________ function.,legends,legend,label,labs,D,2,R,Data Visualizatin,
+6,We use this package in R for classification and regression trees.,rpart,plyr,dplyr,trees,A,1,R,"Machine Learning, Decision Tree",
+7,True or false? Decision trees should not be applied when target variable is discrete valued.,1,0,,,B,1,R,"Machine Learning, Decision Tree",
+8,Does data.table function contain an argument called check.names same as data.frame?,yes,no,maybe,None of these,A,1,R,,
+9,Choose Extraneous (or lurking) variables from the following (choose all that apply).,Provide possible alternative explainations for observed relationships between variables,Are factors that could influence the relationships we measure between two or more variables,Are usually not that important in drawing conclusions about causal relationships,Should be controlled in an experiment before we can make confident causal statements,"A, B, D",2,,Statistics,
+10,Which of these measures of central tendency are Robust to outliers? Check all that apply.,Mean,Median,Mode,,"B, C",1,,Statistics,
+11,"An analysis of the monthly incentives received by 5 salesmen : The mean and median of the incentives is $7000. The only mode among the observations is $12,000. Incentives paid to each salesman were in full thousands. What is the difference between the highest and the lowest incentive received by the 5 salesmen in the month?",$4000,$13000,$7000,$11000,D,2,,Statistics,
+12,Regular Expressions in python are supported in module,reg ,re ,ce,ree,C,1,Python,Data Exploration,
+13,For transforming a left skewed distribution we use_______ of variables,square root,exponential square,log ,None,C,2,,Statistics,
+14,We can access the 5th row of the pandas dataframe df using:,df.iloc[5],df.ix[5],df.loc[5],all,E,1,"Python, Pandas",,
+15,Cross-Sell and Up-Sell are same,1,0,,,,1,,,"Insurance, Telecom"

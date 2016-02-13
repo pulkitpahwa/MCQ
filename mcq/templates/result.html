@@ -5,15 +5,16 @@
     <title></title>
 </head>
 <body>
-{{tools}}  <br/>
-{{domains}} <br/>
-{{techniques}} <br/>
-{{difficulty}} <br/>
+You selected following tags  : <br/>
+Tools : {{tools}}  <br/>
+Domains : : {{domains}} <br/>
+Techniques : {{techniques}} <br/>
+Difficulty : {{difficulty}} <br/>
 
 <br/>
 Questions that match your choices are : <br/>
 {%for i in result%}
-Q : {{i}}<br/>
+Q {{forloop.counter}}: {{i}}<br/>
 {%endfor%}
 </body>
 </html>

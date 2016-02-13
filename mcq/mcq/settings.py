@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'taggit',
     'Questions',
+    'contest',
 )
 
 MIDDLEWARE_CLASSES = (
