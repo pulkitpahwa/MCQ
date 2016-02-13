@@ -15,3 +15,12 @@
  * Though this repo has the basic functionality of MCQ, but the focus of this repo is not to create MCQs but to filter out 
    questions with specific tags.
  * This repo can be used to understand the table structure for designing MCQs and to filter out MCQs from the questions pool.
+
+
+## How things work : 
+ * We already have a pool of [multiple choice] questions (or we can also add new [multiple choice] questions).
+ * When we create a new contest, we want to filter questions with different tags and add them to the contest pool.
+ * The process of adding [multiple choice] questions to the pool would be following : 
+   ** The admin specifies the number of questions he/she wants to select and also specify the tags on which they want to filter out questions.
+   ** The system tells the number of questions available and ask if they want to add these questions to the contest pool
+ * These questions are then served to the user randomly from the contest pool.
