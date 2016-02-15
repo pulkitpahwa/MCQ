@@ -65,7 +65,6 @@ def find_questions_with_given_tags(request) :
         for i in req_techniques_tags : 
             if not i == "" :
                 result = result.filter(techniques__name__in = [i])
-        print result
 
         for i in req_domain_tags :
             if not i == "" :
@@ -85,10 +84,9 @@ def find_questions_with_given_tags(request) :
         if 'difficulty_exclude' in request.POST :
             result = result.exclude(difficulty__name__in = non_req_difficulty_tags)
 
-        print "result = ", result
+        count = len(result)
         return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,
-            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,
-            "non_tools" : non_req_tool_tags, "non_techniques" : non_req_technique_tags, "non_domains" : non_req_domain_tags, "non_difficulty":non_req_difficulty_tags}, 
+            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,"count" : count},
                                  context_instance = RequestContext(request))
 
 
