@@ -4,35 +4,53 @@ from taggit.models import TaggedItemBase
 from contest.models import Contest 
 from django.contrib.auth.models import User
 
-class ToolTags(TaggedItemBase) :
+class Tool_tags(TaggedItemBase) :
+    """
+    Tools tags' custom through model
+    """
     content_object = models.ForeignKey('Question')
 
 
-class TechniqueTags(TaggedItemBase) :
+class Technique_tags(TaggedItemBase) :
+    """
+    Technique tags custom through model
+    """
     content_object = models.ForeignKey('Question')
 
-class DomainTags(TaggedItemBase) :
+class Domain_tags(TaggedItemBase) :
+    """
+    Domain tags' custom through model
+    """
     content_object = models.ForeignKey('Question')
 
-class DifficultyTags(TaggedItemBase) :
+class Difficulty_tags(TaggedItemBase) :
+    """
+    Difficulty tags' custom through model
+    """
     content_object = models.ForeignKey('Question')
 
 class Question(models.Model) : 
+    """
+    Model for questions. 
+    """
     question       = models.TextField()
     description    = models.TextField(blank = True, null = True)
     multiple_true  = models.BooleanField(default = False)
-    tools          = TaggableManager(through = ToolTags, related_name = "tools",verbose_name = "tools")
-    techniques     = TaggableManager(through = TechniqueTags, related_name = "techniques", verbose_name = "techniques")
-    domains        = TaggableManager(through = DomainTags, related_name = "domains", verbose_name = "domains")
-    difficulty     = TaggableManager(through = DifficultyTags, related_name = "difficulty", verbose_name = "difficulty")
+    tools          = TaggableManager(through = Tool_tags, related_name = "tools",verbose_name = "tools")
+    techniques     = TaggableManager(through = Technique_tags, related_name = "techniques", verbose_name = "techniques")
+    domains        = TaggableManager(through = Domain_tags, related_name = "domains", verbose_name = "domains")
+    difficulty     = TaggableManager(through = Difficulty_tags, related_name = "difficulty", verbose_name = "difficulty")
     question_unique_id  = models.CharField(max_length = 12, unique = True)
     approved       = models.BooleanField(default = False) #the question has to be approved to be available for shortlisting
     author         = models.ForeignKey(User, blank = True, null = True)
 
     def __unicode__(self):
-        return self.question[:20]
+        return self.question
 
 class Options(models.Model) : 
+    """
+    Model to store options for a given question.
+    """
     OPTION_CHOICE = (
             ('text', 'Text'),
             ('image', 'Image'),
@@ -49,9 +67,13 @@ class Options(models.Model) :
         return self.option
 
 class Pool(models.Model) :
+    """
+    Model to store information of question's pool
+    """
     contest              = models.ForeignKey(Contest)
     tools                = models.TextField(blank = True, null = True)
     tools_exclusive      = models.BooleanField(default = False)
+    pool_name            = models.CharField(max_length = 50, unique = True)
     techniques           = models.TextField(blank = True, null = True)
     techniques_exclusive = models.BooleanField(default = False)
     domains              = models.TextField(blank = True, null = True)
@@ -59,7 +81,13 @@ class Pool(models.Model) :
     difficulty           = models.TextField(blank = True, null = True)
     difficulty_exclusive = models.BooleanField(default = False)
 
-class QuestionPool(models.Model) :
+    def __unicode__(self) : 
+        return self.pool_name
+
+class Question_pool(models.Model) :
+    """
+    Store questions for a given pool
+    """
     contest = models.ForeignKey(Contest)
     question = models.ForeignKey(Question)
     pool = models.ForeignKey(Pool)
@@ -69,17 +97,20 @@ class QuestionPool(models.Model) :
 
 
 class Particpations(models.Model) : 
+    """
+    Model to store the list of mcqs a user has participated.
+    """
     user = models.ForeignKey(User)
     mcq  = models.ForeignKey(Question)
     contest = models.ForeignKey(Contest)
     start_time = models.DateTimeField(blank = True, null = True)
     end_time = models.DateTimeField(blank = True, null = True)
     time_taken = models.IntegerField(default = 0) #this time is in seconds
-    option1 = models.CharField(max_length = 12, blank = True, null = True)
-    option2 = models.CharField(max_length = 12, blank = True, null = True)
-    option3 = models.CharField(max_length = 12, blank = True, null = True)
-    option4 = models.CharField(max_length = 12, blank = True, null = True)
-    option5 = models.CharField(max_length = 12, blank = True, null = True)
+    option1 = models.BooleanField(default = False)
+    option2 = models.BooleanField(default = False)
+    option3 = models.BooleanField(default = False)
+    option4 = models.BooleanField(default = False)
+    option5 = models.BooleanField(default = False)
     is_correct = models.BooleanField(default = False)
     score      = models.FloatField(default = 0)
     

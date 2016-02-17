@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext 
-from Questions.models import Question, ToolTags, TechniqueTags, DomainTags, DifficultyTags
+from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags
 
 # to filter out questions where tools = ['Python', 'Django'], techniques = ['pandas', 'scipy'], domains = ['xyz'], difficulty = 'beginner' : 
 #    result = Question.objects.all()
@@ -41,36 +41,26 @@ def find_questions_with_given_tags(request) :
         req_techniques_tags = [i.lstrip().rstrip() for i in request.POST['techniques'].split(",")]
         req_difficulty_tags = [i.lstrip().rstrip() for i in request.POST['difficulty'].split(",")]
 
-        print req_tools_tags
-        print req_techniques_tags
-        print req_domain_tags
-        print req_difficulty_tags
-    
-        tooltags = ToolTags.objects.all().values_list("tag__name", flat = True)
-        domaintags = DomainTags.objects.all().values_list("tag__name", flat = True)
-        techniquetags = TechniqueTags.objects.all().values_list("tag__name", flat = True)
-        difficultytags = DifficultyTags.objects.all().values_list("tag__name", flat = True)
+        tooltags = Tool_tags.objects.all().values_list("tag__name", flat = True)
+        domaintags = Domain_tags.objects.all().values_list("tag__name", flat = True)
+        techniquetags = Technique_tags.objects.all().values_list("tag__name", flat = True)
+        difficultytags = Difficulty_tags.objects.all().values_list("tag__name", flat = True)
 
         non_req_tool_tags = list( set(tooltags) - set(req_tools_tags) )
         non_req_technique_tags = list( set(techniquetags) - set(req_techniques_tags) )
         non_req_domain_tags =  list( set(domaintags) - set(req_domain_tags) )
         non_req_difficulty_tags = list(set(difficultytags) - set(req_difficulty_tags) )
 
-
         result = Question.objects.all()
         for i in req_tools_tags : 
             if not i == "" :
                 result = result.filter(tools__name__in = [i])
-
         for i in req_techniques_tags : 
             if not i == "" :
                 result = result.filter(techniques__name__in = [i])
-
         for i in req_domain_tags :
             if not i == "" :
                 result = result.filter(domains__name__in = [i])
-
-
         for i in req_difficulty_tags : 
             if not i == "" :
                 result = result.filter(difficulty__name__in = [i])
