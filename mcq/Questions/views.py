@@ -1,6 +1,10 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext 
-from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags
+from django.utils.crypto import get_random_string
+
+from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags, Options
+
+import csv
 
 # to filter out questions where tools = ['Python', 'Django'], techniques = ['pandas', 'scipy'], domains = ['xyz'], difficulty = 'beginner' : 
 #    result = Question.objects.all()
@@ -31,6 +35,63 @@ from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, D
 #    for i in req_difficulty_tags : 
 #        result = result.filter(domains__name__in = [i])
 
+def find_unique_id() : 
+    unique_id = get_random_string(length = 12)
+    try : 
+        question = Question.objects.get(question_unique_id = unique_id)
+        unique_id = find_unique_id()
+        return unique_id
+    except : 
+        return unique_id
+
+def find_option_id() : 
+    unique_id = get_random_string(length = 12)
+    try : 
+        options = Options.objects.get(option_id = unique_id)
+        unique_id = find_option_id()
+        return unique_id
+    except : 
+        return unique_id
+
+
+def add_questions_from_csv(request) : 
+    """
+    Use this method to add multiple questions from a csv file. 
+    Sample format of csv file : staticfiles/sample_mcq.csv
+    Currently the image upload option is not available in this method.
+    """
+    if request.method == "GET" :
+        return render_to_response("create_questions_from_csv.html",{}, context_instance = RequestContext(request))
+    else : 
+        csv_file = request.FILES['csv_file']
+        with csv_file as f : 
+            data = csv.reader(f)
+            for rows in data : 
+                description = rows[1]
+                answer = [ i.lstrip().rstrip() for i in rows[6].split(",")]
+                difficulty = [i.lstrip().rstrip() for i in rows[7].split(",")]
+                tools = [i.lstrip().rstrip() for i in rows[8].split(",")]
+                techniques = [i.lstrip().rstrip() for i in rows[9].split(",")]
+                domain = [i.lstrip().rstrip() for i in rows[10].split(",")]
+                multiple_true = len(answer) > 1
+                ques = Question.objects.create(  question = description, question_unique_id = find_unique_id(), multiple_true = multiple_true )
+                for i in tools : 
+                    ques.tools.add(i)
+                for i in techniques : 
+                    ques.techniques.add(i)
+                for i in domain :
+                    ques.domains.add(i)
+                for i in difficulty : 
+                    ques.difficulty.add(i)
+                option1 = Options.objects.create(question = ques, option = rows[2], is_solution = 'A' in answer, option_id = find_option_id() ) 
+                option2 = Options.objects.create(question = ques, option = rows[3], is_solution = 'B' in answer, option_id = find_option_id() ) 
+                option3 = Options.objects.create(question = ques, option = rows[4], is_solution = 'C' in answer, option_id = find_option_id() ) 
+                option4 = Options.objects.create(question = ques, option = rows[5], is_solution = 'D' in answer, option_id = find_option_id() ) 
+        return HttpResponse("done")
+
+
+
+                
 
 def find_questions_with_given_tags(request) :
     if request.method == "GET" :
