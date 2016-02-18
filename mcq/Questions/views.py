@@ -86,26 +86,41 @@ def count_questions_with_given_tags(request, contest) :
             tooltags = Tool_tags.objects.all().values_list("tag__name", flat = True)
             non_req_tool_tags = list( set(tooltags) - set(req_tools_tags) )
             result = result.exclude(tools__name__in = non_req_tool_tags)
+            tools_exclude = True 
+        else : 
+            tools_exclude = False
 
         if 'techniques_exclude' in request.POST :
             domaintags = Domain_tags.objects.all().values_list("tag__name", flat = True)
             non_req_technique_tags = list( set(techniquetags) - set(req_techniques_tags) )
             result = result.exclude(techniques__name__in = non_req_technique_tags)
+            techniques_exclude = True 
+        else : 
+            techniques_exclude = False 
 
         if 'domain_exclude' in request.POST :
             techniquetags = Technique_tags.objects.all().values_list("tag__name", flat = True)
             non_req_domain_tags =  list( set(domaintags) - set(req_domain_tags) )
             result = result.exclude(domains__name__in = non_req_domain_tags)
+            domain_exclude = True 
+        else : 
+            domain_exclude = False 
 
         if 'difficulty_exclude' in request.POST :
             difficultytags = Difficulty_tags.objects.all().values_list("tag__name", flat = True)
             non_req_difficulty_tags = list(set(difficultytags) - set(req_difficulty_tags) )
             result = result.exclude(difficulty__name__in = non_req_difficulty_tags)
+            difficulty_exclude = True 
+        else : 
+            difficulty_exclude = False 
 
         count = len(result)
 
-        return HttpResponse(json.dumps({"count" : count, "number_of_questions":number_of_questions, "tools" : req_tools_tags,
-            "techniques" : req_techniques_tags, "domains":req_domain_tags,"difficulty":req_difficulty_tags}), content_type = "application/json")
+        return HttpResponse(json.dumps({"count" : count, "number_of_questions":number_of_questions, 
+            "tools" : req_tools_tags, "techniques" : req_techniques_tags, "domains":req_domain_tags,
+            "difficulty":req_difficulty_tags,"tools_exclude" : tools_exclude, 'techniques_exclude' : techniques_exclude, 
+            'difficulty_exclude' :difficulty_exclude,"domain_exclude" : domain_exclude}),
+            content_type = "application/json")
 #        return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,
 #            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,"count" : count},
 #                                 context_instance = RequestContext(request))
