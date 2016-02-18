@@ -40,7 +40,7 @@ class Question(models.Model) :
     techniques     = TaggableManager(through = Technique_tags, related_name = "techniques", verbose_name = "techniques")
     domains        = TaggableManager(through = Domain_tags, related_name = "domains", verbose_name = "domains")
     difficulty     = TaggableManager(through = Difficulty_tags, related_name = "difficulty", verbose_name = "difficulty")
-    question_unique_id  = models.CharField(max_length = 12, unique = True)
+#    question_unique_id  = models.CharField(max_length = 12, unique = True)
     approved       = models.BooleanField(default = False) #the question has to be approved to be available for shortlisting
     author         = models.ForeignKey(User, blank = True, null = True)
 
@@ -60,7 +60,7 @@ class Options(models.Model) :
     option_image = models.FileField(upload_to = "options", blank = True, null = True)
     option = models.TextField(blank = True, null = True)
     is_solution = models.BooleanField(default = False)
-    option_id = models.CharField(max_length = 12, unique = True)
+#    option_id = models.CharField(max_length = 12, unique = True)
 
 
     def __unicode__(self):

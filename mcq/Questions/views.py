@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext 
 from django.utils.crypto import get_random_string
+from django.http import HttpResponse, HttpResponseRedirect
 
 from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags, Options
 
@@ -35,23 +36,23 @@ import csv
 #    for i in req_difficulty_tags : 
 #        result = result.filter(domains__name__in = [i])
 
-def find_unique_id() : 
-    unique_id = get_random_string(length = 12)
-    try : 
-        question = Question.objects.get(question_unique_id = unique_id)
-        unique_id = find_unique_id()
-        return unique_id
-    except : 
-        return unique_id
-
-def find_option_id() : 
-    unique_id = get_random_string(length = 12)
-    try : 
-        options = Options.objects.get(option_id = unique_id)
-        unique_id = find_option_id()
-        return unique_id
-    except : 
-        return unique_id
+#def find_unique_id() : 
+#    unique_id = get_random_string(length = 12)
+#    try : 
+#        question = Question.objects.get(question_unique_id = unique_id)
+#        unique_id = find_unique_id()
+#        return unique_id
+#    except : 
+#        return unique_id
+#
+#def find_option_id() : 
+#    unique_id = get_random_string(length = 12)
+#    try : 
+#        options = Options.objects.get(option_id = unique_id)
+#        unique_id = find_option_id()
+#        return unique_id
+#    except : 
+#        return unique_id
 
 
 def add_questions_from_csv(request) : 
@@ -68,13 +69,13 @@ def add_questions_from_csv(request) :
             data = csv.reader(f)
             for rows in data : 
                 description = rows[1]
-                answer = [ i.lstrip().rstrip() for i in rows[6].split(",")]
-                difficulty = [i.lstrip().rstrip() for i in rows[7].split(",")]
-                tools = [i.lstrip().rstrip() for i in rows[8].split(",")]
-                techniques = [i.lstrip().rstrip() for i in rows[9].split(",")]
-                domain = [i.lstrip().rstrip() for i in rows[10].split(",")]
+                answer = rows[6]#[ i for i in rows[6].replace(", ", ",").split(",")]
+                difficulty = rows[7] #[i for i in rows[7].replace(", ", ",").split(",")]
+                tools =  rows[8] # [i for i in rows[8].replace(", ", ",").split(",")]
+                techniques = rows[9]#[i for i in rows[9].replace(", ", ",").split(",")]
+                domain = rows[10] #[i for i in rows[10].replace(", ", ",").split(",")]
                 multiple_true = len(answer) > 1
-                ques = Question.objects.create(  question = description, question_unique_id = find_unique_id(), multiple_true = multiple_true )
+                ques = Question.objects.create(  question = description,  multiple_true = multiple_true )
                 for i in tools : 
                     ques.tools.add(i)
                 for i in techniques : 
@@ -83,10 +84,14 @@ def add_questions_from_csv(request) :
                     ques.domains.add(i)
                 for i in difficulty : 
                     ques.difficulty.add(i)
-                option1 = Options.objects.create(question = ques, option = rows[2], is_solution = 'A' in answer, option_id = find_option_id() ) 
-                option2 = Options.objects.create(question = ques, option = rows[3], is_solution = 'B' in answer, option_id = find_option_id() ) 
-                option3 = Options.objects.create(question = ques, option = rows[4], is_solution = 'C' in answer, option_id = find_option_id() ) 
-                option4 = Options.objects.create(question = ques, option = rows[5], is_solution = 'D' in answer, option_id = find_option_id() ) 
+                a_true = 'A' in answer
+                b_true = 'B' in answer
+                c_true = 'C' in answer
+                d_true = 'D' in answer
+                option1 = Options.objects.create(question = ques, option = rows[2], is_solution = a_true ) 
+                option2 = Options.objects.create(question = ques, option = rows[3], is_solution = b_true )
+                option3 = Options.objects.create(question = ques, option = rows[4], is_solution = c_true )
+                option4 = Options.objects.create(question = ques, option = rows[5], is_solution = d_true )
         return HttpResponse("done")
 
 
