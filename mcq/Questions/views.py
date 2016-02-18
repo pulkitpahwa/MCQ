@@ -7,53 +7,6 @@ from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, D
 
 import csv
 
-# to filter out questions where tools = ['Python', 'Django'], techniques = ['pandas', 'scipy'], domains = ['xyz'], difficulty = 'beginner' : 
-#    result = Question.objects.all()
-#    req_tools_tags = ["Python", "Django"]
-#    tooltags = ToolTags.objects.all().values_list("tag__name", flat = True)
-#    non_req_tool_tags = set(tooltags) - set(req_tools_tags)
-#    
-#    req_techniques_tags = ["pandas", "scipy"]
-#    techniquetags = TechniqueTags.objects.all().values_list("tag__name", flat = True)
-#    non_req_technique_tags = set(techniquetags) - set(req_techniques)
-#
-#    req_domain_tags = ["xyz"]
-#    domaintags = DomainTags.objects.all().values_list("tag__name", flat = True)
-#    non_req_domain_tags = set(domaintags) - set(req_domain_tags)
-#    
-#    req_difficulty_tags = ["beginner"]
-#    difficultytags = DifficultyTags.objects.all().values_list("tag__name", flat = True)
-#    non_req_difficulty_tags = set(difficultytags) - set(req_difficulty_tags)
-#
-#    result = Question.objects.all().exclude(tools__name__in = non_req_tool_tags, techniques__name__in = non_req_technique_tags, 
-#                                      domains__name__in = non_req_domain_tags, difficulty__name__in = non_req_domain_tags ).distinct()
-#    for i in req_tools_tags : 
-#         result = result.filter(tools__name__in = [i])
-#    for i in req_techniques_tags : 
-#        result = result.filter(techniques__name__in = [i])
-#    for i in req_domain_tags :
-#        result = result.filter(domains__name__in = [i])
-#    for i in req_difficulty_tags : 
-#        result = result.filter(domains__name__in = [i])
-
-#def find_unique_id() : 
-#    unique_id = get_random_string(length = 12)
-#    try : 
-#        question = Question.objects.get(question_unique_id = unique_id)
-#        unique_id = find_unique_id()
-#        return unique_id
-#    except : 
-#        return unique_id
-#
-#def find_option_id() : 
-#    unique_id = get_random_string(length = 12)
-#    try : 
-#        options = Options.objects.get(option_id = unique_id)
-#        unique_id = find_option_id()
-#        return unique_id
-#    except : 
-#        return unique_id
-
 
 def add_questions_from_csv(request) : 
     """
@@ -69,11 +22,11 @@ def add_questions_from_csv(request) :
             data = csv.reader(f)
             for rows in data : 
                 description = rows[1]
-                answer = rows[6]#[ i for i in rows[6].replace(", ", ",").split(",")]
-                difficulty = rows[7] #[i for i in rows[7].replace(", ", ",").split(",")]
-                tools =  rows[8] # [i for i in rows[8].replace(", ", ",").split(",")]
-                techniques = rows[9]#[i for i in rows[9].replace(", ", ",").split(",")]
-                domain = rows[10] #[i for i in rows[10].replace(", ", ",").split(",")]
+                answer = [ i for i in rows[6].replace(", ", ",").split(",")]
+                difficulty = [i for i in rows[7].replace(", ", ",").split(",")]
+                tools =   [i for i in rows[8].replace(", ", ",").split(",")]
+                techniques = [i for i in rows[9].replace(", ", ",").split(",")]
+                domain = [i for i in rows[10].replace(", ", ",").split(",")]
                 multiple_true = len(answer) > 1
                 ques = Question.objects.create(  question = description,  multiple_true = multiple_true )
                 for i in tools : 
@@ -95,10 +48,10 @@ def add_questions_from_csv(request) :
         return HttpResponse("done")
 
 
-
-                
-
 def find_questions_with_given_tags(request) :
+    """
+    This method is used to find the number of questions with the given tag set.
+    """
     if request.method == "GET" :
         return render_to_response("form.html",{}, context_instance = RequestContext(request))
     else :
