@@ -4,9 +4,10 @@ from django.utils.crypto import get_random_string
 from django.http import HttpResponse, HttpResponseRedirect
 
 from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags, Options
+from contest.models import Contest
 
 import csv
-
+import json
 
 def add_questions_from_csv(request) : 
     """
@@ -48,27 +49,23 @@ def add_questions_from_csv(request) :
         return HttpResponse("done")
 
 
-def find_questions_with_given_tags(request) :
+def count_questions_with_given_tags(request, contest) :
     """
     This method is used to find the number of questions with the given tag set.
     """
+    try : 
+        contest = Contest.objects.get(slug = contest)
+    except : 
+        return HttpResponse("no such contest")
     if request.method == "GET" :
-        return render_to_response("form.html",{}, context_instance = RequestContext(request))
+        return render_to_response("form.html",{"contest":contest}, context_instance = RequestContext(request))
     else :
+        number_of_questions = int(request.POST['number_of_questions'])
         req_domain_tags     = [i.lstrip().rstrip() for i in request.POST['domain'].split(",")]
         req_tools_tags      = [i.lstrip().rstrip() for i in request.POST['tools'].split(",")]
         req_techniques_tags = [i.lstrip().rstrip() for i in request.POST['techniques'].split(",")]
         req_difficulty_tags = [i.lstrip().rstrip() for i in request.POST['difficulty'].split(",")]
 
-        tooltags = Tool_tags.objects.all().values_list("tag__name", flat = True)
-        domaintags = Domain_tags.objects.all().values_list("tag__name", flat = True)
-        techniquetags = Technique_tags.objects.all().values_list("tag__name", flat = True)
-        difficultytags = Difficulty_tags.objects.all().values_list("tag__name", flat = True)
-
-        non_req_tool_tags = list( set(tooltags) - set(req_tools_tags) )
-        non_req_technique_tags = list( set(techniquetags) - set(req_techniques_tags) )
-        non_req_domain_tags =  list( set(domaintags) - set(req_domain_tags) )
-        non_req_difficulty_tags = list(set(difficultytags) - set(req_difficulty_tags) )
 
         result = Question.objects.all()
         for i in req_tools_tags : 
@@ -84,18 +81,33 @@ def find_questions_with_given_tags(request) :
             if not i == "" :
                 result = result.filter(difficulty__name__in = [i])
 
+
         if 'tools_exclude' in request.POST :
+            tooltags = Tool_tags.objects.all().values_list("tag__name", flat = True)
+            non_req_tool_tags = list( set(tooltags) - set(req_tools_tags) )
             result = result.exclude(tools__name__in = non_req_tool_tags)
+
         if 'techniques_exclude' in request.POST :
+            domaintags = Domain_tags.objects.all().values_list("tag__name", flat = True)
+            non_req_technique_tags = list( set(techniquetags) - set(req_techniques_tags) )
             result = result.exclude(techniques__name__in = non_req_technique_tags)
+
         if 'domain_exclude' in request.POST :
+            techniquetags = Technique_tags.objects.all().values_list("tag__name", flat = True)
+            non_req_domain_tags =  list( set(domaintags) - set(req_domain_tags) )
             result = result.exclude(domains__name__in = non_req_domain_tags)
+
         if 'difficulty_exclude' in request.POST :
+            difficultytags = Difficulty_tags.objects.all().values_list("tag__name", flat = True)
+            non_req_difficulty_tags = list(set(difficultytags) - set(req_difficulty_tags) )
             result = result.exclude(difficulty__name__in = non_req_difficulty_tags)
 
         count = len(result)
-        return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,
-            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,"count" : count},
-                                 context_instance = RequestContext(request))
+
+        return HttpResponse(json.dumps({"count" : count, "number_of_questions":number_of_questions, "tools" : req_tools_tags,
+            "techniques" : req_techniques_tags, "domains":req_domain_tags,"difficulty":req_difficulty_tags}), content_type = "application/json")
+#        return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,
+#            "techniques" : req_techniques_tags, "difficulty": req_difficulty_tags, "result" : result,"count" : count},
+#                                 context_instance = RequestContext(request))
 
 

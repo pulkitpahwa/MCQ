@@ -12,7 +12,7 @@
 </head>
 <body>
 <h3>Add new Questions to pool</h3>
-<form action="." method = "post"><br/>
+<form action="/mcq/{{contest.slug}}/create-pool" method = "post"><br/>
     {%csrf_token%}
     <table style = "font-size:18px;line-height:1.5;">
         <tr>
