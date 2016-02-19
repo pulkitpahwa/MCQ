@@ -9,51 +9,90 @@
             height:20px;
         }
     </style>
+    <script type = "text/javascript" src = "/site_media/jquery.js"></script>
 </head>
 <body>
-<h3>Add new Questions to pool</h3>
-<form action="/mcq/{{contest.slug}}/create-pool" method = "post"><br/>
-    {%csrf_token%}
-    <table style = "font-size:18px;line-height:1.5;">
-        <tr>
-            <td>Number of Questions</td>
-            <td> <input type="text" name = "number_of_questions"> </td>
-        </tr>
-        <tr><td><br/></td></tr>
-        <tr>
-            <td>Tags</td>
-            <td></td>
-            <td>Exclude others</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Domain </td>
-            <td> <input type="text" name = "domain" placeholder = "Enter domains separated by ','"> </td>
-            <td> <input type="CHECKBOX" name = "domain_exclude"> </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>Tools </td>
-            <td> <input type="text" name = "tools" placeholder = "Enter domains separated by ','"> </td>
-            <td> <input type="checkbox" name = "tools_exclude"> </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td> Techniques </td>
-            <td> <input type="text" name = "techniques" placeholder = "Enter domains separated by ','"> </td>
-            <td> <input type="checkbox" name = "techniques_exclude"> </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td> Difficulty </td>
-            <td> <input type = "text"  name = "difficulty" placeholder = "Enter domains separated by ','"></td>
-            <td> <input type="checkbox" name = "difficulty_exclude"> </td>
-            <td></td>
-        </tr>
-    </table>
-    <input type="submit" value= "Check Questions">
-</form>
-<!--<button type="button" href = "">Done adding questions</button>-->
-{%include "links.html"%}
+<div style = "width:30%;position:fixed; float:left;display:inline-block;">
+    <h3>Question Pools </h3>
+</div>
+<div style = "position:fixed;margin-left:30%;width:68%;float:left;display:inline-block;">
+
+ <h3>Add new Questions to pool</h3>
+ <form action="/mcq/{{contest.slug}}/create-pool" method = "post"><br/>
+     {%csrf_token%}
+     <table style = "font-size:18px;line-height:1.5;">
+         <tr>
+             <td>Number of Questions</td>
+             <td> <input type="text" name = "number_of_questions" id= "number_of_questions"> </td>
+         </tr>
+         <tr><td><br/></td></tr>
+         <tr>
+             <td>Tags</td>
+             <td></td>
+             <td>Exclude others</td>
+             <td></td>
+         </tr>
+         <tr>
+             <td>Domain </td>
+             <td> <input type="text" name = "domain" placeholder = "Enter domains separated by ','" id = "domain"> </td>
+             <td> <input type="CHECKBOX" name = "domain_exclude" id = "domain_exclude"> </td>
+             <td></td>
+         </tr>
+         <tr>
+             <td>Tools </td>
+             <td> <input type="text" name = "tools" placeholder = "Enter domains separated by ','" id = "tools"> </td>
+             <td> <input type="checkbox" name = "tools_exclude" id = "tools_exclude"> </td>
+             <td></td>
+         </tr>
+         <tr>
+             <td> Techniques </td>
+             <td> <input type="text" name = "techniques" id = "techniques" placeholder = "Enter domains separated by ','"> </td>
+             <td> <input type="checkbox" name = "techniques_exclude" id = "techniques_exclude"> </td>
+             <td></td>
+         </tr>
+         <tr>
+             <td> Difficulty </td>
+             <td> <input type = "text"  name = "difficulty" placeholder = "Enter difficulty separated by ','" id = "difficulty"></td>
+             <td> <input type="checkbox" name = "difficulty_exclude" id = "difficulty_exclude"> </td>
+             <td></td>
+         </tr>
+     </table>
+     <input type="button" id = "submit_button" value= "Check Questions">
+ </form>
+ <!--<button type="button" href = "">Done adding questions</button>-->
+ {%include "links.html"%}
+</div>
+<script>
+$("#submit_button").click(function(){
+//   var tools = $("#tools").val();
+//   var domains = $("#domains").val();
+//   var techniques = $("#techniques").val();
+//   var difficulty = $("#difficulty").val();
+//
+//   var tools_exclude = $("#tools_exclude")[0].checked ;
+//   var techniques_exclude = $("#techniques_exclude")[0].checked ;
+//   var domain_exclude = $("#domain_exclude")[0].checked ;
+//   var difficulty_exclude = $("#difficulty_exclude")[0].checked ;
+
+  var data = new FormData($('form').get(0));
+  $.ajax({
+      url: '/mcq/{{contest.slug}}/create-pool',
+      type: 'POST',
+      data: data,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+///successs result. Change the template to another one
+      },
+      error : function(data){
+////error. Display some error has occured.
+      }
+       
+  });
+
+
+});
+</script>
 </body>
 </html>
