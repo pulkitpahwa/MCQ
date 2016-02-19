@@ -1,0 +1,39 @@
+<h3 class = "display_pool_form" style = "display:none;">your selections</h3>
+<form action="/mcq/{{contest.slug}}/create-pool" method = "post" class = "display_pool_form" style = "display:none"><br/>
+     {%csrf_token%}
+   <table style = "font-size:18px;line-height:1.5;">
+     <tr>
+       <td>Number of Questions</td>
+       <td> <input type="text" name = "number_of_questions" id= "number_of_questions_response" > </td>
+     </tr>
+     <tr><td><br/></td></tr>
+     <tr>
+       <td>Domain </td>
+       <td> <input type="text" name = "domain" placeholder = "Enter domains separated by ','" id = "domain_response"> </td>
+       <td> <input type="CHECKBOX" name = "domain_exclude" id = "domain_exclude_response"> </td>
+       <td></td>
+     </tr>
+     <tr>
+       <td>Tools </td>
+       <td> <input type="text" name = "tools" placeholder = "Enter domains separated by ','" id = "tools_response"> </td>
+       <td> <input type="checkbox" name = "tools_exclude" id = "tools_exclude_response"> </td>
+       <td></td>
+     </tr>
+     <tr>
+       <td> Techniques </td>
+       <td> <input type="text" name = "techniques" id = "techniques_response" placeholder = "Enter domains separated by ','"> </td>
+       <td> <input type="checkbox" name = "techniques_exclude" id = "techniques_exclude_response"> </td>
+       <td></td>
+     </tr>
+     <tr>
+       <td> Difficulty </td>
+       <td> <input type = "text"  name = "difficulty" placeholder = "Enter difficulty separated by ','" id = "difficulty_response"></td>
+       <td> <input type="checkbox" name = "difficulty_exclude" id = "difficulty_exclude_response"> </td>
+       <td></td>
+     </tr>
+   </table>
+   <b> <big id = "number_count"></big> </b> questions found <br/>
+   <h4 class = "note" style = "display:none;"></h4>
+   <input type="button" id = "save_button" value= "Save">
+   <input type="button" id = "edit_button" value= "Edit">
+ </form>
