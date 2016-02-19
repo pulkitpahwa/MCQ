@@ -33,6 +33,15 @@ class Question(models.Model) :
     """
     Model for questions. 
     """
+    TYPE_CHOICE = (
+            ('choices', 'Multiple Choices'),
+            ('fill_ups', 'Fill Right Answer'),
+    )
+    FILL_UPS_CHOICE = (
+            ('string', 'Text'),
+            ('int', 'Integer'),
+            ('float', 'Float'),
+    )
     question       = models.TextField()
     description    = models.TextField(blank = True, null = True)
     multiple_true  = models.BooleanField(default = False)
@@ -43,6 +52,9 @@ class Question(models.Model) :
 #    question_unique_id  = models.CharField(max_length = 12, unique = True)
     approved       = models.BooleanField(default = False) #the question has to be approved to be available for shortlisting
     author         = models.ForeignKey(User, blank = True, null = True)
+    question_type  = models.CharField(max_length = 10, blank = True, null = True, choices = TYPE_CHOICE, default = 'choices')
+    fill_ups_correct_ans = models.CharField(max_length = 100, blank = True, null = True) 
+    fill_ups_type = models.CharField(max_length = 10, blank = True, null = True, choices = FILL_UPS_CHOICE)
 
     def __unicode__(self):
         return self.question
