@@ -1,0 +1,18 @@
+$("#save_button").click(function(){
+
+  var data = new FormData($('form').get(1));
+  $.ajax({
+      url: '/mcq/{{contest.slug}}/save-pool',
+      type: 'POST',
+      data: data,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+         alert("pool created");
+      },
+      error : function(data){
+////error. Display some error has occured.
+      }
+  });
+});

@@ -1,0 +1,43 @@
+$("#submit_button").click(function(){
+
+  var data = new FormData($('form').get(0));
+  $.ajax({
+      url: '/mcq/{{contest.slug}}/create-pool',
+      type: 'POST',
+      data: data,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+          $(".create_pool_form").css({"display":"none"});
+          $(".display_pool_form").css({"display":"block"});
+          $("#number_of_questions_response").val(data["number_of_questions"]);
+          $("#tools_response").val(data["tools"].join());
+          $("#techniques_response").val(data["techniques"].join());
+          $("#domain_response").val(data["domains"].join());
+//          $("#").val(data["number_of_questions_response"]);
+          $("#difficulty_response").val(data["difficulty"].join());
+          $("#number_count").text(data["count"]);
+          console.log(data);
+          console.log(data["count"]);
+          if (data["count"] == 0)
+          {
+              $(".note").text("0 Questions matched your requirements. Press edit to edit your requirements.");
+              $(".note").css({"display": "block"});
+          }
+          else if (data["count"] < data["number_of_questions"] )
+          {
+              $(".note").text("Only " + data["count"] + " are available. Press save to add this pool." )
+              $(".note").css({"display": "block"});
+          }
+          else{
+          }
+      },
+      error : function(data){
+////error. Display some error has occured.
+      }
+       
+  });
+
+
+});
