@@ -137,7 +137,7 @@ def save_questions_with_given_tags(request, contest) :
         number_of_questions = int(request.POST['number_of_questions'])
         #count number of pools for the given contest 
         number_of_pools_of_this_contest = Pool.objects.filter(contest = contest).count() 
-        pool_name = contest.contest_name + str(number_of_pools_of_this_contest + 1)
+        pool_name = contest.slug + str(number_of_pools_of_this_contest + 1)
 
         pool = Pool.objects.create(contest = contest, number_of_questions = number_of_questions,pool_name  = pool_name )
 
