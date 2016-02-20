@@ -77,35 +77,35 @@ class Options(models.Model) :
 
     def __unicode__(self):
         return self.option
-
-class Pool(models.Model) :
-    """
-    Model to store information of question's pool
-    """
-    contest              = models.ForeignKey(Contest)
-    tools                = models.TextField(blank = True, null = True)
-    tools_exclusive      = models.BooleanField(default = False)
-    pool_name            = models.CharField(max_length = 50, unique = True)
-    techniques           = models.TextField(blank = True, null = True)
-    techniques_exclusive = models.BooleanField(default = False)
-    domains              = models.TextField(blank = True, null = True)
-    domains_exclusive    = models.BooleanField(default = False)
-    difficulty           = models.TextField(blank = True, null = True)
-    difficulty_exclusive = models.BooleanField(default = False)
-
-    def __unicode__(self) : 
-        return self.pool_name
-
-class Question_pool(models.Model) :
-    """
-    Store questions for a given pool
-    """
-    contest = models.ForeignKey(Contest)
-    question = models.ForeignKey(Question)
-    pool = models.ForeignKey(Pool)
-
-    def __unicode__(self) :
-        return self.pool
+#
+#class Pool(models.Model) :
+#    """
+#    Model to store information of question's pool
+#    """
+#    contest              = models.ForeignKey(Contest)
+#    tools                = models.TextField(blank = True, null = True)
+#    tools_exclusive      = models.BooleanField(default = False)
+#    pool_name            = models.CharField(max_length = 50, unique = True)
+#    techniques           = models.TextField(blank = True, null = True)
+#    techniques_exclusive = models.BooleanField(default = False)
+#    domains              = models.TextField(blank = True, null = True)
+#    domains_exclusive    = models.BooleanField(default = False)
+#    difficulty           = models.TextField(blank = True, null = True)
+#    difficulty_exclusive = models.BooleanField(default = False)
+#
+#    def __unicode__(self) : 
+#        return self.pool_name
+#
+#class Question_pool(models.Model) :
+#    """
+#    Store questions for a given pool
+#    """
+#    contest = models.ForeignKey(Contest)
+#    question = models.ForeignKey(Question)
+#    pool = models.ForeignKey(Pool)
+#
+#    def __unicode__(self) :
+#        return self.pool
 
 
 class Particpations(models.Model) : 

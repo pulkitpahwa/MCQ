@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'taggit',
     'Questions',
     'contest',
+    'QuestionsPool',
 )
 
 MIDDLEWARE_CLASSES = (
