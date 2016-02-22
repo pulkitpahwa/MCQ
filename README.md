@@ -24,3 +24,18 @@
     * The admin specifies the number of questions he/she wants to select and also specify the tags on which they want to filter out questions.  
     * The system tells the number of questions available and ask if they want to add these questions to the contest pool.  
  * Once these question-contest pools are created, questions are then served from these pools to the user randomly .
+
+
+## Urls : 
+ * /contest/create :  create a new contest 
+ * /contest/<contest-slug>   : a particular contest 
+ * /contest/<contest-slug>/skilltest: skilltest home 
+ * /contest/<contest-slug>/skilltest/join : Join skilltest (To be used by candidate)
+ * /contest/<contest-slug>/skilltest/mcq/ : MCQ's home
+ * /contest/<contest-slug>/skilltest/mcq/<mcq-id>/submit : Submit MCQ's answer
+ * /contest/<contest-slug>/skilltest/mcq/<mcq-id>/review : Review MCQ's answer (Shortlist for review)
+ * /contest/<contest-slug>/skilltest/mcq/finish : Finish skilltest
+ * /mcq/<contest-slug>/create-pool : create contest pool for the particular contest. ( Used by admin  )
+ * /mcq/<contest-slug>/save-pool : save contest pool 
+ * /mcq/add_multiple : create multiple MCQs from CSV 
+ * 
