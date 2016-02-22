@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 from SkillTest.models import Skill_test, Test_participant
 from contest.models import Contest
+from QuestionsPool.models import Candidate_Question_pool, Question_pool
 
 import datetime
 
@@ -42,6 +43,7 @@ def join_skill_test(request, skill_test_slug) :
             # create model entry for this user in model Test_participant
             test_participant = Test_participants.objects.create(skill_test = skill_test, participant = user, 
                 start_time = datetime.datetime.now())
+            
             # create pool of questions that will be served to this user.
             # save start time and return the user to questions page.
     except : 
