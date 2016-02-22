@@ -1,6 +1,12 @@
 from django.db import models
+
+from django.contrib.auth.models import User
+
 from contest.models import Contest
 from Questions.models import Question
+from SkillTest.models import Skill_test
+
+
 
 class Pool(models.Model) :
     """
@@ -31,3 +37,15 @@ class Question_pool(models.Model) :
 
     def __unicode__(self) :
         return self.pool.pool_name
+
+class Candidate_Question_pool(models.Model) : 
+    """
+      Set of questions to be served to a particular user for a given skill test
+    """
+    contest    = models.ForeignKey(Contest, blank = True, null = True)
+    skill_test = models.ForeignKey(Skill_test)
+    question   = models.ForeignKey(Question) 
+    candidate  = models.ForeignKey(User)
+
+    def __unicode__(self) : 
+        return self.contest, self.question
