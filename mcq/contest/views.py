@@ -14,5 +14,5 @@ def create(request) :
         contest = Contest.objects.create(contest_name = name)
         return HttpResponseRedirect("/mcq/" + contest.slug + "/create-pool")
 
-
+    
 

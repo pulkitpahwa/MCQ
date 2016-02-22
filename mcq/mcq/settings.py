@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'Questions',
     'contest',
     'QuestionsPool',
+    'SkillTest',
 )
 
 MIDDLEWARE_CLASSES = (
