@@ -80,24 +80,3 @@ class Options(models.Model) :
     def __unicode__(self):
         return self.option
 
-
-class UserResponse(models.Model) : 
-    """
-    Model to store the list of mcqs a user has participated.
-    """
-    user           = models.ForeignKey(User)
-    mcq            = models.ForeignKey(Question)
-    contest        = models.ForeignKey(Contest)
-    start_time     = models.DateTimeField(blank = True, null = True)
-    end_time       = models.DateTimeField(blank = True, null = True)
-    time_taken     = models.IntegerField(default = 0) #this time is in seconds
-    option1        = models.BooleanField(default = False)
-    option2        = models.BooleanField(default = False)
-    option3        = models.BooleanField(default = False)
-    option4        = models.BooleanField(default = False)
-    option5        = models.BooleanField(default = False)
-    is_correct     = models.BooleanField(default = False)
-    score          = models.FloatField(default = 0)
-    
-    def __unicode__(self):
-        return self.user, self.mcq, self.contest

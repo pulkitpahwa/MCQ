@@ -43,10 +43,24 @@ class Candidate_Question_pool(models.Model) :
     """
       Set of questions to be served to a particular user for a given skill test
     """
-    contest    = models.ForeignKey(Contest, blank = True, null = True)
-    skill_test = models.ForeignKey(Skill_test)
-    question   = models.ForeignKey(Question) 
-    candidate  = models.ForeignKey(User)
+    contest           = models.ForeignKey(Contest, blank = True, null = True)
+    skill_test        = models.ForeignKey(Skill_test)
+    question          = models.ForeignKey(Question) 
+    candidate         = models.ForeignKey(User)
+    visited           = models.BooleanField(default = False)
+    time_started      = models.DateTimeField(blank = True, null = True)
+    time_completed    = models.DateTimeField(blank = True, null = True)
+    time_taken        = models.IntegerField(default = 0)
+    option1           = models.BooleanField(default = False) 
+    option2           = models.BooleanField(default = False) 
+    option3           = models.BooleanField(default = False) 
+    option4           = models.BooleanField(default = False) 
+    option5           = models.BooleanField(default = False) 
+    option6           = models.BooleanField(default = False) 
+    fill_ups_answer   = models.CharField(blank = True, null = True)
+    is_correct        = models.BooleanField(default = False)
+    score             = models.FloatField(default = 0)
+
 
     def __unicode__(self) : 
-        return self.contest, self.question
+        return self.candidate , self.question, self.contest, self.skill_test
