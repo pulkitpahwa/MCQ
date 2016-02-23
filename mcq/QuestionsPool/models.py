@@ -57,7 +57,7 @@ class Candidate_Question_pool(models.Model) :
     option4           = models.BooleanField(default = False) 
     option5           = models.BooleanField(default = False) 
     option6           = models.BooleanField(default = False) 
-    fill_ups_answer   = models.CharField(blank = True, null = True)
+    fill_ups_answer   = models.CharField(max_length = 120,blank = True, null = True)
     is_correct        = models.BooleanField(default = False)
     score             = models.FloatField(default = 0)
 
