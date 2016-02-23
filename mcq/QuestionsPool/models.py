@@ -23,7 +23,7 @@ class Pool(models.Model) :
     difficulty           = models.TextField(blank = True, null = True)
     difficulty_exclusive = models.BooleanField(default = False)
     number_of_questions  = models.IntegerField(default = 0)
-    skill_test           = models.ForeignKey(Skill_test, blank = True, null = True)
+    skill_test           = models.ForeignKey(Skill_test, default = 1)
 
     def __unicode__(self) : 
         return self.pool_name
@@ -32,9 +32,10 @@ class Question_pool(models.Model) :
     """
     Store questions for a given pool
     """
-    contest = models.ForeignKey(Contest)
+    contest = models.ForeignKey(Contest, blank = True, null = True)
     question = models.ForeignKey(Question)
     pool = models.ForeignKey(Pool)
+    skill_test = models.ForeignKey(Skill_test)
 
     def __unicode__(self) :
         return self.pool.pool_name
