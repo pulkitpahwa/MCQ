@@ -7,7 +7,9 @@ import settings
 
 urlpatterns = [
     url(r'^$', 'mcq.views.home', name='home'),
-    url(r'^mcq/', include('Questions.urls')),
+    url(r'^questions/', include('Questions.urls')),
+    url(r'^mcq/', include('SkillTest.urls')),
+
     url(r'^contest/', include('contest.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^site_media/(?P<path>.*)$','django.views.static.serve',{'document_root':settings.STATIC_ROOT}),

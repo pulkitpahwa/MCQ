@@ -2,7 +2,7 @@ $("#submit_button").click(function(){
 
   var data = new FormData($('form').get(0));
   $.ajax({
-      url: '/mcq/{{contest.slug}}/create-pool',
+      url: '/mcq/{{skilltest.slug}}/create-pool',
       type: 'POST',
       data: data,
       cache: false,

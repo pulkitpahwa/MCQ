@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from Questions.models import Question, Tool_tags, Technique_tags, Domain_tags, Difficulty_tags, Options
 from contest.models import Contest
 from QuestionsPool.models import Pool, Question_pool
+from SkillTest.models import Skill_test
 
 import csv
 import json
@@ -56,7 +57,7 @@ def count_questions_with_given_tags(request, contest) :
     """
     try : 
         contest = Contest.objects.get(slug = contest)
-    except : 
+    except Contest.DoesNotExist: 
         return HttpResponse("no such contest")
     if request.method == "GET" :
         return render_to_response("form.html",{"contest":contest}, context_instance = RequestContext(request))
@@ -123,23 +124,24 @@ def count_questions_with_given_tags(request, contest) :
             'difficulty_exclude' :difficulty_exclude,"domain_exclude" : domain_exclude}),
             content_type = "application/json")
 
-def save_questions_with_given_tags(request, contest) :
+def save_questions_with_given_tags(request, skill_test) :
     """
     This method is used to find the number of questions with the given tag set.
     """
     try : 
-        contest = Contest.objects.get(slug = contest)
-    except : 
+        skilltest = Skill_test.objects.get(slug = contest)
+    except Skill_test.DoesNotExist: 
         return HttpResponse("no such contest")
+
     if request.method == "GET" :
-        return render_to_response("form.html",{"contest":contest}, context_instance = RequestContext(request))
+        return render_to_response("form.html",{"skilltest": skilltest}, context_instance = RequestContext(request))
     else :
         number_of_questions = int(request.POST['number_of_questions'])
         #count number of pools for the given contest 
-        number_of_pools_of_this_contest = Pool.objects.filter(contest = contest).count() 
-        pool_name = contest.slug + str(number_of_pools_of_this_contest + 1)
+        number_of_pools_of_this_skill_test = Pool.objects.filter(skill_test = skilltest).count() 
+        pool_name = skilltest.slug + str(number_of_pools_of_this_skill_test + 1)
 
-        pool = Pool.objects.create(contest = contest, number_of_questions = number_of_questions,pool_name  = pool_name )
+        pool = Pool.objects.create(number_of_questions = number_of_questions,pool_name  = pool_name, skill_test = skilltest )
 
         tools = request.POST['tools_response']
         techniques = request.POST['techniques_response']
@@ -216,7 +218,7 @@ def save_questions_with_given_tags(request, contest) :
             pools.save()
 
         for i in result : 
-            Question_pool.objects.create(contest = pool.contest, pool = pool, question = i)
+            Question_pool.objects.create(skill_test = pool.skill_test, pool = pool, question = i)
 
         return HttpResponse("Your pool created")
 #        return render_to_response("result.html",{"tools" : req_tools_tags, "domains" : req_domain_tags,

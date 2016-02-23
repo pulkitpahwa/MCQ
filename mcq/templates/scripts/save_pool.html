@@ -2,7 +2,7 @@ $("#save_button").click(function(){
 
   var data = new FormData($('form').get(1));
   $.ajax({
-      url: '/mcq/{{contest.slug}}/save-pool',
+      url: '/mcq/{{skilltest.slug}}/save-pool',
       type: 'POST',
       data: data,
       cache: false,

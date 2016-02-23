@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form action="/mcq/" method = "POST">
+    {%csrf_token%}
+    Name of skilltest :     <input type="text" name = "name"> <br/> <br/>
+    <input type="submit" value = "create skilltest">
+</form>
+</body>
+</html>
