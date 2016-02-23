@@ -12,7 +12,7 @@ class Pool(models.Model) :
     """
     Model to store information of question's pool
     """
-    contest              = models.ForeignKey(Contest)
+    contest              = models.ForeignKey(Contest, blank = True, null = True)
     tools                = models.TextField(blank = True, null = True)
     tools_exclusive      = models.BooleanField(default = False)
     pool_name            = models.CharField(max_length = 50, unique = True)
@@ -22,7 +22,8 @@ class Pool(models.Model) :
     domains_exclusive    = models.BooleanField(default = False)
     difficulty           = models.TextField(blank = True, null = True)
     difficulty_exclusive = models.BooleanField(default = False)
-    number_of_questions = models.IntegerField(default = 0)
+    number_of_questions  = models.IntegerField(default = 0)
+    skill_test           = models.ForeignKey(Skill_test, blank = True, null = True)
 
     def __unicode__(self) : 
         return self.pool_name
