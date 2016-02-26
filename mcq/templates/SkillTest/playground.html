@@ -4,17 +4,30 @@
     <meta charset="UTF-8">
     <title></title>
     <style type="text/css" media="all">
-
-        
-    </style>
+.left{
+    width : 30%;
+    margin-left : 0px;
+    float:left;
+    display:inline-block;
+}
+.right{
+    width : 69%;
+    margin-left : 30%;
+    float:left;
+    display:inline-block;
+}
+    </style>  
 </head>
 <body>
-    PLAYGROUND
-    <div class = "left">
-
-    </div>
-    <div class = "right">
-        
-    </div>
+  PLAYGROUND
+  <div class = "left">
+    <ul>
+     {%for i in mcqs%}
+     <li><a href="">{{i.question}}</a></li>
+     {%endfor%}
+    </ul>
+  </div>
+  <div class = "right">
+  </div>
 </body>
 </html>

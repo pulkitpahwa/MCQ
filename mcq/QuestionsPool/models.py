@@ -64,4 +64,4 @@ class Candidate_Question_pool(models.Model) :
 
 
     def __unicode__(self) : 
-        return self.candidate , self.question, self.contest, self.skill_test
+        return self.skill_test

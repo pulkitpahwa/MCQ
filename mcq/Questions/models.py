@@ -59,7 +59,7 @@ class Question(models.Model) :
     accuracy             = models.FloatField(blank = True, null = True)   #avg accuracy of solving the contest
 
     def __unicode__(self):
-        return self.question
+        return str(self.question)
 
 class Options(models.Model) : 
     """

@@ -2,6 +2,8 @@ from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse 
+
 
 from django.contrib.auth.models import User
 
@@ -268,7 +270,7 @@ def playground(request, skill_test) :
         try : 
             user  = request.user 
             participant = Test_participant.objects.get(skill_test = skill_test, participant = user)
-            mcqs_set = Candidate_Question_pool.objects.filter(candidate = participant, skill_test = skill_test)
+            mcqs_set = Candidate_Question_pool.objects.filter(candidate = participant.participant, skill_test = skill_test)
             return render_to_response("SkillTest/playground.html",{"skilltest":skill_test, "mcqs" : mcqs_set},
                     context_instance = RequestContext(request))
         except Test_participant.DoesNotExist :

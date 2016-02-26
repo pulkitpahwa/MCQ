@@ -22,4 +22,4 @@ class Test_participant(models.Model) :
     score = models.FloatField(default = 0)
 
     def __unicode__(self) : 
-        return self.skill_test, self.participant
+        return self.skill_test.name
